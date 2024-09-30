@@ -1,0 +1,30 @@
+edu-platform/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── package.json
+│   └── Dockerfile
+│
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
+│   ├── package.json
+│   └── Dockerfile
+│
+├── database/
+│   ├── init.sql
+│   └── Dockerfile
+│
+├── docker-compose.yml
+└── README.md
+
