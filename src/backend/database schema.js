@@ -4,7 +4,7 @@ CREATE TABLE users (
   username VARCHAR(50) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  role user_role NOT NULL,
+  role VARCHAR(20) NOT NULL,  -- Change this line to use VARCHAR with a defined set of roles
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE courses (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
   description TEXT,
-  instructor_id INTEGER REFERENCES users(id),
+  instructor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,  -- or ON DELETE CASCADE
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -21,13 +21,13 @@ CREATE TABLE subjects (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description TEXT,
-  course_id INTEGER REFERENCES courses(id),
+  course_id INTEGER REFERENCES courses(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE class_sessions (
   id SERIAL PRIMARY KEY,
-  subject_id INTEGER REFERENCES subjects(id),
+  subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE,
   start_time TIMESTAMP WITH TIME ZONE NOT NULL,
   end_time TIMESTAMP WITH TIME ZONE NOT NULL,
   zoom_link VARCHAR(255) NOT NULL,
@@ -35,8 +35,8 @@ CREATE TABLE class_sessions (
 );
 
 CREATE TABLE subject_enrollments (
-  user_id INTEGER REFERENCES users(id),
-  subject_id INTEGER REFERENCES subjects(id),
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE,
   enrolled_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, subject_id)
 );
