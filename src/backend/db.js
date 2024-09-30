@@ -4,7 +4,7 @@ CREATE TABLE users (
   username VARCHAR(50) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  role VARCHAR(20) NOT NULL,  -- Change this line to use VARCHAR with a defined set of roles
+  role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'instructor', 'student')),  -- Define allowed roles
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -12,7 +12,7 @@ CREATE TABLE courses (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
   description TEXT,
-  instructor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,  -- or ON DELETE CASCADE
+  instructor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,  -- Set to NULL on delete
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE class_sessions (
   id SERIAL PRIMARY KEY,
   subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE,
   start_time TIMESTAMP WITH TIME ZONE NOT NULL,
-  end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_time TIMESTAMP WITH TIME ZONE NOT NULL CHECK (start_time < end_time),  -- Ensure start time is before end time
   zoom_link VARCHAR(255) NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
